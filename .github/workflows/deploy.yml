@@ -77,15 +77,12 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}"
+        run: | 
+          echo "MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}"
 
   deploy:
     needs: test
-    env:
-      MONGODB_CLUSTER_ADDRESS: cluster0.hiepfv4.mongodb.net
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-      PORT: 3000
+ 
     runs-on: ubuntu-latest
     steps:
       - name: Output information
