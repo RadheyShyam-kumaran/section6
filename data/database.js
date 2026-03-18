@@ -16,10 +16,13 @@ try {
   console.log('Connected successfully to server');
 } catch (error) {
   console.log('Connection failed.');
+  console.log('Reason:', error.message); // 👈 helps debug why it failed
   await client.close();
   console.log('Connection closed.');
+  process.exit(1); // ✅ Stop here — don't continue with a dead client
 }
 
+// ✅ Only reached if connection succeeded
 const database = client.db(dbName);
 
 export default database;

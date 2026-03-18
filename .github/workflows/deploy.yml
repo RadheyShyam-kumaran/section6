@@ -1,18 +1,66 @@
+# name: Deployment
+# on:
+#   push:
+#     branches:
+#       - main
+#       - dev
+# env: 
+#   MONGODB_DB_NAME: DEMO
+# jobs:
+#   test:
+#     env :
+#       MONGODB_CLUSTER_ADDRESS: cluster0.hiepfv4.mongodb.net
+#       MONGODB_USERNAME : Radheyshyam
+#       MONGODB_PASSWORD : 1312Shy@m
+#       PORT : 3000
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get Code
+#         uses: actions/checkout@v3
+#       - name: Cache dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.npm
+#           key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+#       - name: Install dependencies
+#         run: npm ci
+#       - name: Run server
+#         run: npm start & npx wait-on http://127.0.0.1:$PORT
+#       - name: Run tests
+#         run: npm test
+#       - name: Output information
+#         run: |
+#           echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+#   deploy:
+#     needs: test
+#     env :
+#       MONGODB_CLUSTER_ADDRESS: cluster0.hiepfv4.mongodb.net
+#       MONGODB_USERNAME : Radheyshyam
+#       MONGODB_PASSWORD : 1312Shy@m
+#       PORT : 3000
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Output information
+#         run: |        
+#           echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+#           echo "MONGO_DB_NAME: $MONGODB_DB_NAME"
 name: Deployment
 on:
   push:
     branches:
       - main
       - dev
-env: 
+
+env:
   MONGODB_DB_NAME: DEMO
+
 jobs:
   test:
-    env :
+    env:
       MONGODB_CLUSTER_ADDRESS: cluster0.hiepfv4.mongodb.net
-      MONGODB_USERNAME : Radheyshyam
-      MONGODB_PASSWORD : 1312Shy@m
-      PORT : 3000
+      MONGODB_USERNAME: Radheyshyam
+      MONGODB_PASSWORD: 1312Shy@m
+      PORT: 3000
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -29,18 +77,18 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Output information
-        run: |
-          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+        run: echo "MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}"
+
   deploy:
     needs: test
-    env :
+    env:
       MONGODB_CLUSTER_ADDRESS: cluster0.hiepfv4.mongodb.net
-      MONGODB_USERNAME : Radheyshyam
-      MONGODB_PASSWORD : 1312Shy@m
-      PORT : 3000
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      PORT: 3000
     runs-on: ubuntu-latest
     steps:
       - name: Output information
-        run: |        
-          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+        run: |
+          echo "MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}"
           echo "MONGO_DB_NAME: $MONGODB_DB_NAME"
